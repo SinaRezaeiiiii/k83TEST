@@ -7,7 +7,12 @@ metadata:
     {{- include "client-app.labels" . | nindent 4 }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ include "client-app.fullname" . }}-tls
   rules:
     - host: {{ .Values.ingress.host }}
       http:
