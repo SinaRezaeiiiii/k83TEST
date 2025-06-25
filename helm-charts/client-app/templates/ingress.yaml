@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "client-app.labels" . | nindent 4 }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
   tls:
@@ -17,11 +17,25 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: /
+          - path: /()?(.*)
             pathType: Prefix
             backend:
               service:
                 name: {{ include "client-app.fullname" . }}
                 port:
                   number: {{ .Values.service.port }}
+          - path: /auth(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: authentication-service
+                port:
+                  number: 8080
+          - path: /courses(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: course-service
+                port:
+                  number: 8080
 {{- end }}
