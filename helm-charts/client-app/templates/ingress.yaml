@@ -14,28 +14,29 @@ spec:
         - {{ .Values.ingress.host }}
       secretName: {{ include "client-app.fullname" . }}-tls
   rules:
-    - host: {{ .Values.ingress.host }}
-      http:
-        paths:
-          - path: /()?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {{ include "client-app.fullname" . }}
-                port:
-                  number: {{ .Values.service.port }}
-          - path: /auth(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: authentication-service
-                port:
-                  number: 8080
-          - path: /courses(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: course-service
-                port:
-                  number: 8080
-{{- end }}
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+        - path: /()(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: {{ include "client-app.fullname" . }}
+              port:
+                number: {{ .Values.service.port }}
+
+        - path: /api/auth(/|$)(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: authentication-service
+              port:
+                number: 8080
+
+        - path: /api/courses(/|$)(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: course-service
+              port:
+                number: 8080
