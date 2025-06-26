@@ -40,3 +40,5 @@ spec:
               name: course-service
               port:
                 number: 8080
+
+{{- end }}
