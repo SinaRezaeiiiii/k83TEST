@@ -29,11 +29,13 @@ jobs:
       - name: Delete existing MySQL
         run: |
           helm uninstall mysql --namespace team-git-happens || true
-          
-      - name: Wait for MySQL to be ready
+
+      - name: Wait for MySQL Pod to be ready
         run: |
-          kubectl rollout status statefulset/mysql -n team-git-happens --timeout=120s || \
-          kubectl wait --for=condition=Ready pod -l app.kubernetes.io/name=mysql -n team-git-happens --timeout=120s
+          kubectl wait --for=condition=Ready pod \
+            -l app.kubernetes.io/name=mysql \
+            -n team-git-happens \
+            --timeout=120s
 
       - name: Reinstall MySQL
         run: |
