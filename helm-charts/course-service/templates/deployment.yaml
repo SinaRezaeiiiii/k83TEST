@@ -32,6 +32,11 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+  {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
@@ -46,16 +51,11 @@ spec:
               protocol: TCP
 
           env:
-            - name: SPRING_DATASOURCE_URL
-              value: "{{ .Values.env.SPRING_DATASOURCE_URL }}"
-            - name: SPRING_DATASOURCE_USERNAME
-              value: "{{ .Values.env.SPRING_DATASOURCE_USERNAME }}"
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: "{{ .Values.env.SPRING_DATASOURCE_PASSWORD }}"
-            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
-              value: "{{ .Values.env.SPRING_JPA_HIBERNATE_DDL_AUTO }}"
-            - name: SPRING_FLYWAY_ENABLED
-              value: "{{ .Values.env.SPRING_FLYWAY_ENABLED }}"
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+          {{- end }}
+
 
 
           {{- with .Values.livenessProbe }}

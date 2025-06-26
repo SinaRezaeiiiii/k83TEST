@@ -117,9 +117,20 @@ tolerations: []
 
 affinity: {}
 env:
-  SPRING_DATASOURCE_URL: jdbc:mysql://mysql.team-git-happens.svc.cluster.local:3306/course_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-  SPRING_DATASOURCE_USERNAME: admin
-  SPRING_DATASOURCE_PASSWORD: githappens!
-  SPRING_JPA_HIBERNATE_DDL_AUTO: update
-  SPRING_FLYWAY_ENABLED: "true"
-  SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+  - name: SPRING_DATASOURCE_URL
+    value: jdbc:mysql://mysql.team-git-happens.svc.cluster.local:3306/course_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  - name: SPRING_DATASOURCE_USERNAME
+    value: myuser
+  - name: SPRING_DATASOURCE_PASSWORD
+    value: mypass
+  - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+    value: update
+  - name: SPRING_FLYWAY_ENABLED
+    value: "true"
+  - name: SPRING_FLYWAY_BASELINE_ON_MIGRATE
+    value: "true"
+
+initContainers:
+  - name: wait-for-mysql
+    image: busybox
+    command: ['sh', '-c', 'until nc -z mysql 3306; do echo waiting for mysql; sleep 2; done;']
