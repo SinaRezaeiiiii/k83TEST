@@ -29,7 +29,7 @@ jobs:
       - name: Delete existing MySQL
         run: |
           helm uninstall mysql --namespace team-git-happens || true
-          
+
       - name: Deploy MySQL (Bitnami Chart)
         run: |
           helm upgrade --install mysql oci://registry-1.docker.io/bitnamicharts/mysql \
@@ -37,12 +37,6 @@ jobs:
             --create-namespace \
             -f ./helm-charts/mysql/mysql-values.yaml
 
-      - name: Reinstall MySQL
-        run: |
-          helm install mysql ./helm-charts/mysql \
-            --namespace team-git-happens \
-            --create-namespace \
-            -f ./helm-charts/mysql/mysql-values.yaml
 
       - name: Deploy client-app
         run: |
