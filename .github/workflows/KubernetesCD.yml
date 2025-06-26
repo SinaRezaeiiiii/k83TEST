@@ -29,13 +29,13 @@ jobs:
       - name: Delete existing MySQL
         run: |
           helm uninstall mysql --namespace team-git-happens || true
-
-      - name: Wait for MySQL Pod to be ready
+          
+      - name: Deploy MySQL (Bitnami Chart)
         run: |
-          kubectl wait --for=condition=Ready pod \
-            -l app.kubernetes.io/name=mysql \
-            -n team-git-happens \
-            --timeout=120s
+          helm upgrade --install mysql oci://registry-1.docker.io/bitnamicharts/mysql \
+            --namespace team-git-happens \
+            --create-namespace \
+            -f ./helm-charts/mysql/mysql-values.yaml
 
       - name: Reinstall MySQL
         run: |
