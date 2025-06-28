@@ -6,72 +6,17 @@ metadata:
   labels:
     {{- include "client-app.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  tls:
-    - hosts:
-        - {{ .Values.ingress.host }}
-      secretName: {{ include "client-app.fullname" . }}-tls
   rules:
-  - host: {{ .Values.ingress.host }}
-    http:
-      paths:
-        # Static assets (JS, CSS, images) should go to client-app
-        - path: /assets
-          pathType: Prefix
-          backend:
-            service:
-              name: {{ include "client-app.fullname" . }}
-              port:
-                number: {{ .Values.service.port }}
-
-        # API routes (only /api/* paths)
-        - path: /api/auth
-          pathType: Prefix
-          backend:
-            service:
-              name: authentication-service
-              port:
-                number: 8080
-
-        - path: /api/courses
-          pathType: Prefix
-          backend:
-            service:
-              name: course-service
-              port:
-                number: 8080
-
-        - path: /api/categories
-          pathType: Prefix
-          backend:
-            service:
-              name: course-service
-              port:
-                number: 8080
-
-        - path: /api/reviews
-          pathType: Prefix
-          backend:
-            service:
-              name: review-service
-              port:
-                number: 8080
-
-        - path: /api/recommendation
-          pathType: Prefix
-          backend:
-            service:
-              name: recommendation-gateway
-              port:
-                number: 8080
-
-        # Default route for everything else (including root)
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: {{ include "client-app.fullname" . }}
-              port:
-                number: {{ .Values.service.port }}
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "client-app.fullname" . }}
+                port:
+                  number: {{ .Values.service.port }}
 {{- end }}

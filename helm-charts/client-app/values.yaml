@@ -11,7 +11,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "f94324c46256436bac64562912187f7b79e2bcef"
+  tag: "latest"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -59,8 +59,14 @@ service:
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: true
-  host: client-app.student.k8s.aet.cit.tum.de  # deine Wunsch-URL
-
+  className: "nginx"  # Wenn du mit nginx arbeitest
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  host: client.local
+  paths:
+    - path: /client(/|$)(.*)
+      pathType: Prefix
+  tls: []
 
 
 resources: {}
