@@ -11,11 +11,25 @@ spec:
     - host: git.local
       http:
         paths:
+          - path: /api/auth
+            pathType: Prefix
+            backend:
+              service:
+                name: authentication-service
+                port:
+                  number: 8080
           - path: /auth
             pathType: Prefix
             backend:
               service:
                 name: authentication-service
+                port:
+                  number: 8080
+          - path: /api/courses
+            pathType: Prefix
+            backend:
+              service:
+                name: course-service
                 port:
                   number: 8080
           - path: /courses
@@ -25,11 +39,25 @@ spec:
                 name: course-service
                 port:
                   number: 8080
+          - path: /api/review
+            pathType: Prefix
+            backend:
+              service:
+                name: review-service
+                port:
+                  number: 8080
           - path: /review
             pathType: Prefix
             backend:
               service:
                 name: review-service
+                port:
+                  number: 8080
+          - path: /api/recommend
+            pathType: Prefix
+            backend:
+              service:
+                name: recommendation-gateway
                 port:
                   number: 8080
           - path: /recommend
