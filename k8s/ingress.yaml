@@ -11,7 +11,7 @@ spec:
     - host: client-app.student.k8s.aet.cit.tum.de
       http:
         paths:
-          - path: /api/auth
+          - path: /auth
             pathType: Prefix
             backend:
               service:
