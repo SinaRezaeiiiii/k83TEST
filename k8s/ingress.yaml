@@ -4,7 +4,7 @@ metadata:
   name: git-happens-ingress
   namespace: team-git-happens
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    ng    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
@@ -30,9 +30,7 @@ spec:
             backend:
               service:
                 name: review-service
-                port:
-                  number: 8080
-          - path: /recommend
+   - path: /recommend
             pathType: Prefix
             backend:
               service:

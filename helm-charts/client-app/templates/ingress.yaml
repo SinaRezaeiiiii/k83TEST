@@ -33,7 +33,7 @@ spec:
               port:
                 number: 8080
 
-        - path: /courses(/|$)(.*)
+        - path: /api/courses(/|$)(.*)
           pathType: ImplementationSpecific
           backend:
             service:
