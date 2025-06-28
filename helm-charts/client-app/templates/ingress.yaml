@@ -8,6 +8,8 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-staging
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^/api/auth/(.*) /auth/$1 break;
 spec:
   tls:
     - hosts:
