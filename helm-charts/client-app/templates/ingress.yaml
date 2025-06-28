@@ -8,9 +8,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-staging
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^/api/courses/?(.*)$ /courses/$1 break;
-      rewrite ^/api/auth/?(.*)$ /auth/$1 break;
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   tls:
     - hosts:
@@ -28,16 +26,16 @@ spec:
               port:
                 number: {{ .Values.service.port }}
 
-        - path: /api/auth
-          pathType: Prefix
+        - path: /api/auth/?(.*)
+          pathType: ImplementationSpecific
           backend:
             service:
               name: authentication-service
               port:
                 number: 8080
 
-        - path: /api/courses
-          pathType: Prefix
+        - path: /api/courses/?(.*)
+          pathType: ImplementationSpecific
           backend:
             service:
               name: course-service
