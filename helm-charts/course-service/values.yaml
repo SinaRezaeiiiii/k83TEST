@@ -129,6 +129,8 @@ env:
     value: "true"
   - name: SPRING_FLYWAY_BASELINE_ON_MIGRATE
     value: "true"
+  - name: REVIEW_SERVICE_URL
+    value: http://review-service.team-git-happens.svc.cluster.local:8080
 
 initContainers:
   - name: wait-for-mysql
