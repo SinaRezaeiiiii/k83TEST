@@ -58,7 +58,7 @@ service:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: false  # Using existing git-happens-ingress instead
+  enabled: true  # Using our own ingress with correct path rewriting
   host: k83test-client.student.k8s.aet.cit.tum.de  # unique subdomain for this deployment
 
 
