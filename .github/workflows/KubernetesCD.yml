@@ -49,7 +49,7 @@ jobs:
         run: |
           helm upgrade --install authentication-service ./helm-charts/authentication-service \
             --namespace team-git-happens \
-            --set image.tag=f94324c46256436bac64562912187f7b79e2bcef
+            --set image.tag=latest
 
       - name: Deploy course-service
         run: |
